@@ -67,8 +67,6 @@ func (r *Repository) ListByUser(ctx context.Context, userID uint64) ([]model.Sho
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
-
 	lists := make([]model.ShoppingList, 0)
 	for rows.Next() {
 		var list model.ShoppingList
