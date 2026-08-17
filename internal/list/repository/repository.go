@@ -69,7 +69,7 @@ func (r *Repository) ListByUser(ctx context.Context, userID uint64) ([]model.Sho
 	}
 	defer rows.Close()
 
-	var lists []model.ShoppingList
+	lists := make([]model.ShoppingList, 0)
 	for rows.Next() {
 		var list model.ShoppingList
 		if err := rows.Scan(&list.ID, &list.Name, &list.Description, &list.OwnerID, &list.OwnerName,

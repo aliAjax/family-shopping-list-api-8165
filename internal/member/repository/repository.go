@@ -57,7 +57,7 @@ func (r *Repository) List(ctx context.Context, listID uint64) ([]model.Member, e
 	}
 	defer rows.Close()
 
-	var members []model.Member
+	members := make([]model.Member, 0)
 	for rows.Next() {
 		var m model.Member
 		if err := rows.Scan(&m.ID, &m.ListID, &m.UserID, &m.Role, &m.Username, &m.Nickname,
