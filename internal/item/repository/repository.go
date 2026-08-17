@@ -71,6 +71,8 @@ func (r *Repository) ListByList(ctx context.Context, listID uint64) ([]model.Ite
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
+
 	items := make([]model.Item, 0)
 	for rows.Next() {
 		var item model.Item

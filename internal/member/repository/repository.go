@@ -55,6 +55,8 @@ func (r *Repository) List(ctx context.Context, listID uint64) ([]model.Member, e
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
+
 	members := make([]model.Member, 0)
 	for rows.Next() {
 		var m model.Member
