@@ -68,7 +68,8 @@ func (r *Repository) ListByList(ctx context.Context, listID uint64) ([]model.Inv
 	}
 	defer rows.Close()
 
-	var invites []model.Invite
+	// Pre-allocate so empty result sets encode as JSON [] instead of null.
+	invites := make([]model.Invite, 0)
 	for rows.Next() {
 		var invite model.Invite
 		if err := rows.Scan(&invite.ID, &invite.ListID, &invite.Code, &invite.CreatedBy, &invite.CreatorName,
