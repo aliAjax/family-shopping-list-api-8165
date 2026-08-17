@@ -73,7 +73,7 @@ func (r *Repository) ListByList(ctx context.Context, listID uint64) ([]model.Ite
 	}
 	defer rows.Close()
 
-	items := make([]model.Item, 0)
+	var items []model.Item
 	for rows.Next() {
 		var item model.Item
 		if err := rows.Scan(&item.ID, &item.ListID, &item.Name, &item.Quantity, &item.Purchased,

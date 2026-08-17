@@ -68,7 +68,7 @@ func (r *Repository) ListByList(ctx context.Context, listID uint64) ([]model.Inv
 	}
 	defer rows.Close()
 
-	invites := make([]model.Invite, 0)
+	var invites []model.Invite
 	for rows.Next() {
 		var invite model.Invite
 		if err := rows.Scan(&invite.ID, &invite.ListID, &invite.Code, &invite.CreatedBy, &invite.CreatorName,
