@@ -50,7 +50,7 @@ func (r *Repository) GetByID(ctx context.Context, id uint64) (*model.ShoppingLis
 		return nil, ErrNotFound
 	}
 	if err != nil {
-		return nil, fmt.Errorf("查询清单失败: %v", err)
+		return nil, fmt.Errorf("查询清单失败: %w", err)
 	}
 	return &list, nil
 }

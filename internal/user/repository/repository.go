@@ -45,7 +45,7 @@ func (r *Repository) GetByUsername(ctx context.Context, username string) (*model
 		return nil, ErrNotFound
 	}
 	if err != nil {
-		return nil, fmt.Errorf("查询用户失败: %v", err)
+		return nil, fmt.Errorf("查询用户失败: %w", err)
 	}
 	return &user, nil
 }

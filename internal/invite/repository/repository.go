@@ -50,7 +50,7 @@ func (r *Repository) GetByCode(ctx context.Context, code string) (*model.Invite,
 		return nil, ErrNotFound
 	}
 	if err != nil {
-		return nil, fmt.Errorf("查询邀请码失败: %v", err)
+		return nil, fmt.Errorf("查询邀请码失败: %w", err)
 	}
 	return &invite, nil
 }

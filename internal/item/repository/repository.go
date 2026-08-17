@@ -53,7 +53,7 @@ func (r *Repository) GetByID(ctx context.Context, listID, itemID uint64) (*model
 		return nil, ErrNotFound
 	}
 	if err != nil {
-		return nil, fmt.Errorf("查询商品失败: %v", err)
+		return nil, fmt.Errorf("查询商品失败: %w", err)
 	}
 	return &item, nil
 }
