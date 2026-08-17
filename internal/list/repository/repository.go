@@ -55,7 +55,7 @@ func (r *Repository) GetByID(ctx context.Context, id uint64) (*model.ShoppingLis
 }
 
 func (r *Repository) ListByUser(ctx context.Context, userID uint64) ([]model.ShoppingList, error) {
-	rows, err := r.db.QueryContext(ctx,
+	rows, err := r.db.QueryContext(context.Background(),
 		`SELECT l.id, l.name, l.description, l.owner_id, u.nickname,
 		        (SELECT COUNT(*) FROM members m WHERE m.list_id = l.id) AS member_count,
 		        l.created_at, l.updated_at

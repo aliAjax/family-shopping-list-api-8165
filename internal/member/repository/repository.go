@@ -44,7 +44,7 @@ func (r *Repository) IsOwner(ctx context.Context, listID, userID uint64) (bool, 
 }
 
 func (r *Repository) List(ctx context.Context, listID uint64) ([]model.Member, error) {
-	rows, err := r.db.QueryContext(ctx,
+	rows, err := r.db.QueryContext(context.Background(),
 		`SELECT m.id, m.list_id, m.user_id, m.role, u.username, u.nickname,
 		        m.joined_at, m.created_at, m.updated_at
 		 FROM members m

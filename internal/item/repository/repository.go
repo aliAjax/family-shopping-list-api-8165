@@ -58,7 +58,7 @@ func (r *Repository) GetByID(ctx context.Context, listID, itemID uint64) (*model
 }
 
 func (r *Repository) ListByList(ctx context.Context, listID uint64) ([]model.Item, error) {
-	rows, err := r.db.QueryContext(ctx,
+	rows, err := r.db.QueryContext(context.Background(),
 		`SELECT i.id, i.list_id, i.name, i.quantity, i.purchased,
 		        i.created_by, i.updated_by, cu.nickname, uu.nickname,
 		        i.created_at, i.updated_at

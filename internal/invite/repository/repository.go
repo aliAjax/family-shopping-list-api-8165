@@ -55,7 +55,7 @@ func (r *Repository) GetByCode(ctx context.Context, code string) (*model.Invite,
 }
 
 func (r *Repository) ListByList(ctx context.Context, listID uint64) ([]model.Invite, error) {
-	rows, err := r.db.QueryContext(ctx,
+	rows, err := r.db.QueryContext(context.Background(),
 		`SELECT i.id, i.list_id, i.code, i.created_by, u.nickname,
 		        i.max_uses, i.used_count, i.expires_at, i.active, i.created_at, i.updated_at
 		 FROM invites i
