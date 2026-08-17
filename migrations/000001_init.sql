@@ -1,0 +1,74 @@
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    username VARCHAR(64) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    nickname VARCHAR(64) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_users_username (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS shopping_lists (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(255) NOT NULL DEFAULT '',
+    owner_id BIGINT UNSIGNED NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY idx_shopping_lists_owner_id (owner_id),
+    CONSTRAINT fk_shopping_lists_owner FOREIGN KEY (owner_id) REFERENCES users (id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS members (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    list_id BIGINT UNSIGNED NOT NULL,
+    user_id BIGINT UNSIGNED NOT NULL,
+    role VARCHAR(16) NOT NULL DEFAULT 'member',
+    joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_members_list_user (list_id, user_id),
+    KEY idx_members_user_id (user_id),
+    CONSTRAINT fk_members_list FOREIGN KEY (list_id) REFERENCES shopping_lists (id) ON DELETE CASCADE,
+    CONSTRAINT fk_members_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS invites (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    list_id BIGINT UNSIGNED NOT NULL,
+    code VARCHAR(32) NOT NULL,
+    created_by BIGINT UNSIGNED NOT NULL,
+    max_uses INT NOT NULL DEFAULT 10,
+    used_count INT NOT NULL DEFAULT 0,
+    expires_at TIMESTAMP NULL,
+    active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_invites_code (code),
+    KEY idx_invites_list_id (list_id),
+    CONSTRAINT fk_invites_list FOREIGN KEY (list_id) REFERENCES shopping_lists (id) ON DELETE CASCADE,
+    CONSTRAINT fk_invites_creator FOREIGN KEY (created_by) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS items (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    list_id BIGINT UNSIGNED NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    quantity INT NOT NULL DEFAULT 1,
+    purchased TINYINT(1) NOT NULL DEFAULT 0,
+    created_by BIGINT UNSIGNED NOT NULL,
+    updated_by BIGINT UNSIGNED NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY idx_items_list_id (list_id),
+    KEY idx_items_created_by (created_by),
+    KEY idx_items_updated_by (updated_by),
+    CONSTRAINT fk_items_list FOREIGN KEY (list_id) REFERENCES shopping_lists (id) ON DELETE CASCADE,
+    CONSTRAINT fk_items_creator FOREIGN KEY (created_by) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT fk_items_updater FOREIGN KEY (updated_by) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+database:
+  host: mysql
+  port: 3306
+  user: shopping
+  password: shopping_secret
+  name: family_shopping
+
+jwt:
+  secret: change-me-to-a-long-random-secret
+  token_ttl_hours: 24
