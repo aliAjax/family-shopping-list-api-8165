@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 
 	"family-shopping-list-api/internal/item/model"
 )
@@ -52,7 +53,7 @@ func (r *Repository) GetByID(ctx context.Context, listID, itemID uint64) (*model
 		return nil, ErrNotFound
 	}
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("查询商品失败: %v", err)
 	}
 	return &item, nil
 }

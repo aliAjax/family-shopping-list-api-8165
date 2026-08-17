@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 
 	"family-shopping-list-api/internal/user/model"
 )
@@ -44,7 +45,7 @@ func (r *Repository) GetByUsername(ctx context.Context, username string) (*model
 		return nil, ErrNotFound
 	}
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("查询用户失败: %v", err)
 	}
 	return &user, nil
 }

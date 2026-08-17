@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 
 	"family-shopping-list-api/internal/invite/model"
 )
@@ -49,7 +50,7 @@ func (r *Repository) GetByCode(ctx context.Context, code string) (*model.Invite,
 		return nil, ErrNotFound
 	}
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("查询邀请码失败: %v", err)
 	}
 	return &invite, nil
 }
