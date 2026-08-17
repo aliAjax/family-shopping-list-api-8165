@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"io"
@@ -51,7 +50,7 @@ func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	userID, _ := middleware.UserIDFromContext(r.Context())
-	lists, err := h.service.ListByUser(context.Background(), userID)
+	lists, err := h.service.ListByUser(r.Context(), userID)
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, "list_lists_failed", err.Error())
 		return

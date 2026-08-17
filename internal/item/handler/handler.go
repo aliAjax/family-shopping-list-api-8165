@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"io"
@@ -45,7 +44,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	if listID == 0 {
 		return
 	}
-	items, err := h.service.List(context.Background(), listID)
+	items, err := h.service.List(r.Context(), listID)
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, "list_items_failed", err.Error())
 		return
